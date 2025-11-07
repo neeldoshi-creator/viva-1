@@ -1,0 +1,55 @@
+# Program: Library Borrowing Records Manager
+
+# Function to compute average books borrowed
+def average_books(borrow_counts):
+    total_books = sum(borrow_counts)
+    avg = total_books / len(borrow_counts)
+    return avg
+
+# Function to find book with highest and lowest borrowings
+def highest_lowest(borrow_counts, books):
+    max_index = borrow_counts.index(max(borrow_counts))
+    min_index = borrow_counts.index(min(borrow_counts))
+    return books[max_index], books[min_index]
+
+# Function to count members with zero borrowings
+def count_zero_borrowers(borrow_counts):
+    return borrow_counts.count(0)
+
+# Function to find the most frequently borrowed book (mode)
+def most_frequent_book(borrow_counts, books):
+    freq = {}
+    for i in range(len(books)):
+        freq[books[i]] = borrow_counts[i]
+
+    max_count = max(freq.values())
+    most_frequent = [book for book, count in freq.items() if count == max_count]
+    return most_frequent, max_count
+
+
+# ---------- MAIN PROGRAM ----------
+
+# Sample Data
+books = ["Python Basics", "DS in Python", "AI Intro", "ML Guide", "DBMS"]
+borrow_counts = [5, 8, 3, 8, 0]   # number of times each book was borrowed
+
+print("Books:", books)
+print("Borrow Counts:", borrow_counts)
+print("-" * 50)
+
+# 1. Average number of books borrowed
+avg = average_books(borrow_counts)
+print(f"Average number of books borrowed: {avg:.2f}")
+
+# 2. Book with highest and lowest borrowings
+high, low = highest_lowest(borrow_counts, books)
+print(f"Most Borrowed Book: {high}")
+print(f"Least Borrowed Book: {low}")
+
+# 3. Count of members with 0 borrowings
+zero_members = count_zero_borrowers(borrow_counts)
+print(f"Members with 0 borrowings: {zero_members}")
+
+# 4. Most frequently borrowed book (Mode)
+most_freq_books, freq = most_frequent_book(borrow_counts, books)
+print(f"Most Frequently Borrowed Book(s): {most_freq_books} (Borrowed {freq} times)")
