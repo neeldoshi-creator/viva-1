@@ -1,0 +1,87 @@
+# Hash Table implementation using Linear Probing
+
+TABLE_SIZE = 10
+hash_table = [None] * TABLE_SIZE  # Initialize table with None
+
+# Hash function using division method
+def hash_function(key):
+    return key % TABLE_SIZE
+
+# Insert function
+def insert(key):
+    index = hash_function(key)
+    start_index = index  # To detect full table
+
+    while hash_table[index] is not None and hash_table[index] != "DELETED":
+        index = (index + 1) % TABLE_SIZE
+        if index == start_index:
+            print("Hash Table is full! Cannot insert.")
+            return
+    hash_table[index] = key
+    print(f"Inserted key {key} at index {index}")
+
+# Search function
+def search(key):
+    index = hash_function(key)
+    start_index = index
+
+    while hash_table[index] is not None:
+        if hash_table[index] == key:
+            print(f"Key {key} found at index {index}")
+            return True
+        index = (index + 1) % TABLE_SIZE
+        if index == start_index:
+            break
+    print(f"Key {key} not found.")
+    return False
+
+# Delete function
+def delete(key):
+    index = hash_function(key)
+    start_index = index
+
+    while hash_table[index] is not None:
+        if hash_table[index] == key:
+            hash_table[index] = "DELETED"
+            print(f"Key {key} deleted from index {index}")
+            return
+        index = (index + 1) % TABLE_SIZE
+        if index == start_index:
+            break
+    print(f"Key {key} not found for deletion.")
+
+# Display function
+def display():
+    print("\nHash Table:")
+    for i in range(TABLE_SIZE):
+        print(f"Index {i}: {hash_table[i]}")
+    print()
+
+# ---------- MAIN PROGRAM ----------
+while True:
+    print("\n--- Hash Table Menu ---")
+    print("1. Insert Key")
+    print("2. Search Key")
+    print("3. Delete Key")
+    print("4. Display Table")
+    print("5. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    match choice:
+        case 1:
+            key = int(input("Enter key to insert: "))
+            insert(key)
+        case 2:
+            key = int(input("Enter key to search: "))
+            search(key)
+        case 3:
+            key = int(input("Enter key to delete: "))
+            delete(key)
+        case 4:
+            display()
+        case 5:
+            print("Exiting program...")
+            break
+        case _:
+            print("Invalid choice! Try again.")
