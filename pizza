@@ -1,0 +1,46 @@
+import heapq
+
+# Dijkstra's Algorithm Implementation
+def dijkstra(graph, start):
+    # Distance dictionary initialized with infinity
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    visited = set()
+    
+    # Min-heap priority queue
+    pq = [(0, start)]  # (distance, node)
+    
+    while pq:
+        current_dist, current_node = heapq.heappop(pq)
+        
+        if current_node in visited:
+            continue
+        visited.add(current_node)
+        
+        for neighbor, weight in graph[current_node]:
+            distance = current_dist + weight
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(pq, (distance, neighbor))
+    
+    return distances
+
+# ---------- MAIN PROGRAM ----------
+graph = {
+    'Shop': [('A', 3), ('B', 1)],
+    'A': [('Shop', 3), ('B', 7), ('C', 5)],
+    'B': [('Shop', 1), ('A', 7), ('C', 2), ('D', 7)],
+    'C': [('A', 5), ('B', 2), ('D', 3)],
+    'D': [('B', 7), ('C', 3)]
+}
+
+print("Locations in Pizza Delivery Graph:")
+for loc in graph:
+    print(f"{loc} → {graph[loc]}")
+
+start = 'Shop'
+result = dijkstra(graph, start)
+
+print("\nMinimum Delivery Time from Shop to Each Location:")
+for location, time in result.items():
+    print(f"{location}: {time} mins")
