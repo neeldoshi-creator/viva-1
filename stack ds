@@ -1,0 +1,57 @@
+undo_stack = []
+redo_stack = []
+document = "hieee"
+
+def make_change(new_text):
+    global document
+    undo_stack.append(document)
+    document = new_text
+    redo_stack.clear()
+    print("Changes applied successfully")
+
+def undo():
+    global document
+    if not undo_stack:
+        print("Nothing to undo")
+    else:
+        redo_stack.append(document)
+        document = undo_stack.pop()
+        print("Undo done")
+
+def redo():
+    global document
+    if not redo_stack:
+        print("Nothing to redo")
+    else:
+        undo_stack.append(document)
+        document = redo_stack.pop()
+        print("Redo done successfully")
+
+def display():
+    print("Current document:", document)
+
+# Menu Loop
+while True:
+    print("\n1. Make Change\n2. Undo\n3. Redo\n4. Display\n5. Exit")
+    char = int(input("Enter your choice: "))
+
+    match char:
+        case 1:
+            new_text = input("Enter new text: ")
+            make_change(new_text)
+        case 2:
+            undo()
+        case 3:
+            redo()
+        case 4:
+            display()
+        case 5:
+            print("Exiting...")
+            break
+        case _:
+            print("Invalid choice!")
+
+    cont = input("Do you want to continue? (y/n): ").lower()
+    if cont != 'y':
+        print("Thank you!")
+        break
