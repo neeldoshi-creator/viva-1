@@ -1,0 +1,50 @@
+# Program: Linear and Binary Search Implementation for Customer IDs
+
+# ----- Linear Search Function -----
+def linear_search(customer_ids, key):
+    for i in range(len(customer_ids)):
+        if customer_ids[i] == key:
+            return i  # Found, return index
+    return -1  # Not found
+
+
+# ----- Binary Search Function -----
+def binary_search(customer_ids, key):
+    low = 0
+    high = len(customer_ids) - 1
+
+    while low <= high:
+        mid = (low + high) // 2
+
+        if customer_ids[mid] == key:
+            return mid  # Found
+        elif customer_ids[mid] < key:
+            low = mid + 1
+        else:
+            high = mid - 1
+
+    return -1  # Not found
+
+
+# ---------- MAIN PROGRAM ----------
+
+# Sample Data (Sorted list for binary search)
+customer_ids = [101, 105, 112, 120, 135, 150, 165, 180, 190]
+print("Customer Account IDs:", customer_ids)
+
+# Input: ID to search
+key = int(input("Enter Customer ID to search: "))
+
+# 1️⃣ Linear Search
+pos_linear = linear_search(customer_ids, key)
+if pos_linear != -1:
+    print(f"Linear Search: Customer ID {key} found at index {pos_linear}")
+else:
+    print(f"Linear Search: Customer ID {key} not found")
+
+# 2️⃣ Binary Search
+pos_binary = binary_search(customer_ids, key)
+if pos_binary != -1:
+    print(f"Binary Search: Customer ID {key} found at index {pos_binary}")
+else:
+    print(f"Binary Search: Customer ID {key} not found")
