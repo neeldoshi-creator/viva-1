@@ -1,0 +1,135 @@
+class Node:
+    def _init_(self, roll, name, marks):
+        self.roll = roll
+        self.name = name
+        self.marks = marks
+        self.prev = None
+        self.next = None
+
+
+class StudentList:
+    def _init_(self):
+        self.head = None
+
+    # Add new student at end
+    def add_student(self, roll, name, marks):
+        new_node = Node(roll, name, marks)
+        if self.head is None:
+            self.head = new_node
+            print("Record added successfully!")
+            return
+        temp = self.head
+        while temp.next:
+            temp = temp.next
+        temp.next = new_node
+        new_node.prev = temp
+        print("Record added successfully!")
+
+    # Delete student by roll number
+    def delete_student(self, roll):
+        temp = self.head
+        while temp:
+            if temp.roll == roll:
+                if temp.prev:
+                    temp.prev.next = temp.next
+                if temp.next:
+                    temp.next.prev = temp.prev
+                if temp == self.head:
+                    self.head = temp.next
+                print(f"Record with Roll No {roll} deleted.")
+                return
+            temp = temp.next
+        print("Record not found!")
+
+    # Search by roll number
+    def search(self, roll):
+        temp = self.head
+        while temp:
+            if temp.roll == roll:
+                print(f"Found: Roll No: {temp.roll}, Name: {temp.name}, Marks: {temp.marks}")
+                return temp
+            temp = temp.next
+        print("Record not found!")
+        return None
+
+    # Update student record
+    def update(self, roll, new_name=None, new_marks=None):
+        temp = self.search(roll)
+        if temp:
+            if new_name:
+                temp.name = new_name
+            if new_marks is not None:
+                temp.marks = new_marks
+            print("Record updated successfully!")
+
+    # Sort records (by roll or marks)
+    def sort_records(self, key="roll", reverse=False):
+        if self.head is None:
+            print("No records to sort.")
+            return
+        swapped = True
+        while swapped:
+            swapped = False
+            temp = self.head
+            while temp.next:
+                if key == "roll":
+                    cond = temp.roll > temp.next.roll
+                else:
+                    cond = temp.marks > temp.next.marks
+                if reverse:
+                    cond = not cond
+                if cond:
+                    temp.roll, temp.next.roll = temp.next.roll, temp.roll
+                    temp.name, temp.next.name = temp.next.name, temp.name
+                    temp.marks, temp.next.marks = temp.next.marks, temp.marks
+                    swapped = True
+                temp = temp.next
+        print(f"Records sorted by {key} ({'Descending' if reverse else 'Ascending'})")
+
+    # Display records
+    def display(self):
+        if self.head is None:
+            print("No records to display.")
+            return
+        print("\nRoll No\tName\tMarks")
+        print("---------------------------")
+        temp = self.head
+        while temp:
+            print(f"{temp.roll}\t{temp.name}\t{temp.marks}")
+            temp = temp.next
+
+
+# -------------------- MAIN PROGRAM --------------------
+students = StudentList()
+
+while True:
+    print("\n--- Student Record Management using Linked List ---")
+    print("1. Add Student Record")
+    print("2. Delete Student Record")
+    print("3. Update Student Record")
+    print("4. Search Student Record")
+    print("5. Sort Records")
+    print("6. Display All Records")
+    print("7. Exit")
+
+    ch = int(input("Enter your choice: "))
+
+    if ch == 1:
+        roll = int(input("Enter Roll No: "))
+        name = input("Enter Name: ")
+        marks = float(input("Enter Marks: "))
+        students.add_student(roll, name, marks)
+
+    elif ch == 2:
+        roll = int(input("Enter Roll No to delete: "))
+        students.delete_student(roll)
+
+    elif ch == 3:
+        roll = int(input("Enter Roll No to update: "))
+        name = input("Enter new Name (press Enter to skip): ")
+        marks_input = input("Enter new Marks (press Enter to skip): ")
+        marks = float(marks_input) if marks_input else None
+        students.update(roll, name if name else None, marks)
+
+    elif ch == 4:
+        roll = int(input("Enter Roll No to search:
